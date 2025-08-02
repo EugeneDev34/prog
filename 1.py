@@ -1,9 +1,4 @@
-import random
 
-# Фиксированные дата и время для всех писем
-FIXED_DATE = "Mon, 15 Jan 2024 12:00:00 +0300"
-TIMESTAMP = "20240115_120000"
-# Базы данных имен, фамилий и отчеств (по 100 значений)
 MALE_NAMES = [
     "Александр", "Дмитрий", "Сергей", "Андрей", "Алексей", "Иван", "Максим", 
     "Михаил", "Артем", "Даниил", "Кирилл", "Никита", "Егор", "Илья", "Владимир",
@@ -118,6 +113,7 @@ CUSTOM_DOMAINS = [
     "mailfaster.com", "inboxrush.ru", "postalwave.net", "digitalpost.site",
     "netletter.org", "speedmail.tech", "webpost.pro", "cloudinbox.xyz"
 ]
+import random
 
 def generate_phone():
     """Генерация российского номера: +7 (XXX) XXX-XX-XX"""
@@ -125,92 +121,85 @@ def generate_phone():
     num = f"{random.randint(0, 999):03}-{random.randint(0, 99):02}-{random.randint(0, 99):02}"
     return f"+7 ({code}) {num}"
 
+# Мужские имена, фамилии и отчества
+MALE_NAMES = [
+    "Александр", "Дмитрий", "Сергей", "Андрей", "Алексей", "Иван", "Максим", 
+    "Михаил", "Артем", "Даниил", "Кирилл"]
+
+MALE_SURNAMES = [
+    "Иванов", "Петров", "Сидоров", "Смирнов", "Кузнецов", "Попов", "Васильев",
+    "Новиков", "Федоров", "Морозов", "Волков", "Алексеев"]
+
+MALE_PATRONYMICS = [
+    "Александрович", "Дмитриевич", "Сергеевич", "Андреевич", "Алексеевич", "Иванович", 
+    "Максимович", "Михайлович", "Артемович", "Даниилович", "Кириллович"]
+
+# Женские имена, фамилии и отчества
+FEMALE_NAMES = [
+    "Александра", "Мария", "Анна", "Елена", "Ольга", "Наталья", "Ирина",
+    "Татьяна", "Екатерина", "Юлия", "Дарья"]
+
+FEMALE_SURNAMES = [
+    "Иванова", "Петрова", "Сидорова", "Смирнова", "Кузнецова", "Попова", "Васильева",
+    "Новикова", "Федорова", "Морозова", "Волкова", "Алексеева"]
+
+FEMALE_PATRONYMICS = [
+    "Александровна", "Дмитриевна", "Сергеевна", "Андреевна", "Алексеевна", "Ивановна",
+    "Максимовна", "Михайловна", "Артемовна", "Данииловна", "Кирилловна"]
+
+# Список доменов
+CUSTOM_DOMAINS = [
+    "supermail.xyz", "fastbox.pro", "megahost.net", "quickpost.tech",
+    "cybermail.io", "databox.biz", "virtualpost.cloud", "netexpress.digital",
+    "ultramail.space", "quantumail.ai", "neomail.live", "hyperpost.online",
+    "mailfaster.com", "inboxrush.ru", "postalwave.net", "digitalpost.site",
+    "netletter.org", "speedmail.tech", "webpost.pro", "cloudinbox.xyz"
+]
+
 def generate_email(first_name, last_name):
-    """Генерация email"""
-    prefixes = [
-        f"{first_name.lower()}.{last_name.lower()}",
-        f"{last_name.lower()}.{first_name.lower()}",
-        f"{first_name.lower()}_{last_name.lower()}"
-    ]
-    return f"{random.choice(prefixes)}@{random.choice(CUSTOM_DOMAINS)}"
-
-def create_eml_file(email_data, to_email="standard@почта.ру"):
-    """Создаёт EML файл с фиксированной датой"""
-    filename = f"email_{TIMESTAMP}.eml"
+    """Генерация email на основе имени и фамилии"""
     
-    eml_content = f"""From: {email_data['Email']}
-To: {to_email}
-Subject: Письмо от {email_data['Фамилия']} {email_data['Имя']}
-Date: {FIXED_DATE}
-Content-Type: text/plain; charset="utf-8"
-
-Уважаемый получатель,
-
-Это автоматически сгенерированное письмо.
-
-Данные отправителя:
-ФИО: {email_data['Фамилия']} {email_data['Имя']} {email_data['Отчество']}
-Телефон: {email_data['Телефон']}
-Email: {email_data['Email']}
-"""
-
-    try:
-        with open(filename, 'w', encoding='utf-8') as f:
-            f.write(eml_content)
-        return filename
-    except Exception as e:
-        print(f"Ошибка при создании файла: {e}")
-        return None
+    # Варианты формирования email
+    patterns = [
+        f"{first_name[0].lower()}{last_name.lower()}",
+        f"{first_name.lower()}.{last_name.lower()}",
+        f"{last_name.lower()}{random.randint(10, 199)}"
+    ]
+    
+    return f"{random.choice(patterns)}@{random.choice(CUSTOM_DOMAINS)}{random.randint(10, 199)}"
 
 def generate_person():
-    """Генерация данных человека"""
-    gender = random.choice(["male", "female"])
+    # Случайно выбираем пол
+    is_male = random.choice([True, False])
     
-    if gender == "male":
-        first_name = random.choice(MALE_NAMES)
-        last_name = random.choice(MALE_SURNAMES)
-        middle_name = random.choice(MALE_PATRONYMICS)
+    if is_male:
+        name = random.choice(MALE_NAMES)
+        surname = random.choice(MALE_SURNAMES)
+        patronymic = random.choice(MALE_PATRONYMICS)
     else:
-        first_name = random.choice(FEMALE_NAMES)
-        last_name = random.choice(FEMALE_SURNAMES)
-        middle_name = random.choice(FEMALE_PATRONYMICS)
+        name = random.choice(FEMALE_NAMES)
+        surname = random.choice(FEMALE_SURNAMES)
+        patronymic = random.choice(FEMALE_PATRONYMICS)
     
-    phone = generate_phone()
-    email = generate_email(first_name, last_name)
+    unique_num = random.randint(1, 100)
     
-    return {
-        "Фамилия": last_name,
-        "Имя": first_name,
-        "Отчество": middle_name,
-        "Телефон": phone,
-        "Email": email,
+    # Формируем данные персоны
+    person_data = {
+        "name": name,
+        "patronymic": patronymic,
+        "surname": f"{surname}_{unique_num}",
+        "phone": generate_phone(),
     }
-
-def main():
-    print("Генератор данных и EML-файлов")
-    print("----------------------------")
-    print("Нажмите Enter для генерации")
-    print("Введите 'q' для выхода\n")
     
-    while True:
-        user_input = input("> ").strip().lower()
-        
-        if user_input == 'q':
-            print("Программа завершена.")
-            break
-        
-        person = generate_person()
-        print("\n--- Новые данные ---")
-        for key, value in person.items():
-            print(f"{key}: {value}")
-        
-        filename = create_eml_file(person)
-        if filename:
-            print(f"\nФайл {filename} создан")
-        else:
-            print("\nОшибка создания файла")
-        
-        print()
+    # Генерируем email
+    person_data["email"] = generate_email(name, person_data["surname"])
+    
+    return person_data
 
-if name == "main":
-    main()
+# Генерируем и выводим информацию о персоне
+person = generate_person()
+print("Имя:", person["name"])
+print("Отчество:", person["patronymic"])
+print("Фамилия:", person["surname"])
+print("Телефон:", person["phone"])
+print("Email:", person["email"])
