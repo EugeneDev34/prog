@@ -1,10 +1,10 @@
 def create_eml_file(name, to_email):
     received_date = "Thu, 31 Jul 2025 10:19:54 +0700"
-    message_id = "8431527f-a8b7-4405-8611-5a7e172b8aab@arqatech.com"
+    message_id = "843152fdgerga7e172b8aab@amail"
     email_date = "Thu, 31 Jul 2025 10:19:53 +0700"
     user_agent = "Mozilla Thunderbird"
     content_language = "ru"
-    from_email = "Evgeniy Cherepnin <echer@arqatech.com>"
+    from_email = "E <e@ma>"
     subject = f"Пример письма {name}"
     body = "Это тестовое письмо."
 
