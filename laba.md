@@ -1,3 +1,4 @@
+```cpp
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -825,3 +826,4 @@ namespace lab_3_cherepnin
         
     }
 }
+```
